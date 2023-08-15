@@ -1,6 +1,6 @@
 import unicodedata
 
-with open('data/characters.txt', 'r') as file:
+with open('enrichments/characters.txt', 'r') as file:
 	__characters_fullnames = [line.rstrip("\n") for line in file.readlines()]
 
 __characters_names = []
@@ -21,8 +21,7 @@ def is_substring_in_string(substring, text):
 
 	return normalized_substring in normalized_text
 
-def characters_enrichment(row):
-	text = row["text"]
+def get_characters(text):
 	result = []
 
 	# Check for full name matches
@@ -36,31 +35,45 @@ def characters_enrichment(row):
 			# Check if the name is not part of any full name
 			if not any(name in full_name for full_name in result):
 				result.append(name)
-	row["characters"] = ",".join(list(set(result)))
+	return list(set(result))
+
+def characters_enrichment(row):
+	text = row["text"]
+	result = get_characters(text)
+	row["characters"] = ",".join(result)
 
 
-with open('data/locations.txt', 'r') as file:
+with open('enrichments/locations.txt', 'r') as file:
 	__locations = [line.rstrip("\n") for line in file.readlines()]
 
-def location_enrichment(row):
-	text = row["text"]
+def get_locations(text):
 	result = []
 
 	for location in __locations:
 		if is_substring_in_string(location, text):
 			result.append(location)
 
-	row["locations"] = ",".join(list(set(result)))
+	return list(set(result))
 
-with open('data/artifacts.txt', 'r') as file:
+def location_enrichment(row):
+	text = row["text"]
+	result = get_locations(text)
+
+	row["locations"] = ",".join(result)
+
+with open('enrichments/artifacts.txt', 'r') as file:
 	__artifacts = [line.rstrip("\n") for line in file.readlines()]
 
-def artifact_enrichment(row):
-	text = row["text"]
+def get_artifacts(text):
 	result = []
 
 	for location in __artifacts:
 		if is_substring_in_string(location, text):
 			result.append(location)
+	return list(set(result))
 
-	row["artifacts"] = ",".join(list(set(result)))
+def artifact_enrichment(row):
+	text = row["text"]
+	result = get_artifacts(text)
+
+	row["artifacts"] = ",".join(result)

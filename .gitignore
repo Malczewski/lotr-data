@@ -2,3 +2,5 @@
 temp/
 models/
 __pycache__/
+books-csv/
+books/
