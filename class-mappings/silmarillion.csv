@@ -1,0 +1,10 @@
+Class,Type,Condition
+calibre1,AUTHOR,
+calibre11,TITLE,
+calibre33,CHAPTER_NUMBER,
+calibre35,CHAPTER_NAME,
+calibre21,TEXT_STORY,
+calibre24,TEXT_STORY,
+calibre31,TEXT_CONTEXT,
+calibre27,TEXT_POEM,
+calibre17,TEXT_CONTEXT,

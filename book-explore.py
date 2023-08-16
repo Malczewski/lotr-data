@@ -10,7 +10,7 @@ def explore_csv(csv_filename):
 		csv_reader = csv.DictReader(csvfile)
 		
 		for row in csv_reader:
-			text = row['Text'][:50]  # Truncate text to 50 characters
+			text = row['Text'][:100]  # Truncate text to 50 characters
 			class_name = row['Class']
 			if text:  # Skip empty text
 				class_texts[class_name].append(text)
@@ -20,6 +20,9 @@ def explore_csv(csv_filename):
 		print(f"- {class_name}")
 		if texts:
 			random_texts = random.sample(texts, min(5, len(texts)))
+			for text in texts[:10]:
+				if text not in random_texts:
+					print(f"  - {text}")
 			for text in random_texts:
 				print(f"  - {text}")
 		else:

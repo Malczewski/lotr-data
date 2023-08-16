@@ -31,6 +31,8 @@ def process_csv(input_filename, output_filename):
 		for row in csvreader:
 			type = row['Type']
 			value = row['Text']
+			if value == '':
+				continue
 
 			if type in current_data:
 				current_data[type] = value

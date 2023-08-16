@@ -5,6 +5,16 @@
     "projectName": "{{PROJECT_NAME}}",
     "attributes": [
         {
+            "name": "VERSION",
+            "type": "NUMBER",
+            "map": "STRUCT",
+            "display": "VERSION",
+            "defaultValue": 1,
+            "isReportable": true,
+            "isMultiValue": false,
+            "isCaseSensitive": false
+        },
+        {
             "name": "SOURCE",
             "type": "TEXT",
             "map": "SOURCE",

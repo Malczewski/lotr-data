@@ -1,0 +1,11 @@
+Class,Type,Condition
+tit,TITLE,
+pt,PART,
+au,AUTHOR,
+ext.*,TEXT_CONTEXT,
+p1,TEXT_EXTRA,
+tp,TEXT_POEM,NO_NUMBER
+nl.*,TEXT_EXTRA,
+n-.*,TEXT_EXTRA,
+vx.*,TEXT_POEM,NO_NUMBER
+fm1,CHAPTER_NAME,

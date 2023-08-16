@@ -9,7 +9,7 @@ def clean_text(text):
 	cleaned_text = ''.join(c for c in cleaned_text if not unicodedata.category(c).startswith('C'))
 	return cleaned_text.strip()
 
-def apply_condition(condition, prev_type = '', next_type = ''):
+def apply_condition(condition, text, prev_type = '', next_type = ''):
 	prev_type = '' if prev_type == None else prev_type
 	next_type = '' if next_type == None else next_type
 	if condition == 'BEFORE_SPEECH':
@@ -20,6 +20,8 @@ def apply_condition(condition, prev_type = '', next_type = ''):
 		return ('TEXT_EXTRA' in prev_type)
 	elif condition == 'BEFORE_CN':
 		return next_type == 'CHAPTER_NUMBER'
+	elif condition == 'NO_NUMBER':
+		return not re.match('^\d*$', text)
 	raise
 	
 def read_mapping_from_file(mapping_csv):
@@ -64,12 +66,12 @@ def process_csv(input_csv, custom_mapping_csv, output_csv):
 			text = clean_text(row['Text'])
 			for class_pattern, class_type, class_condition in class_to_mappings:
 				if re.match('^' + class_pattern + '$', class_name):
-				
-					next_type = get_simple_mapping(class_to_mappings, next_row['Class'])
+					if next_row != None:
+						next_type = get_simple_mapping(class_to_mappings, next_row['Class'])
 					prev_type = None
 					if len(filtered_data) > 0:
 						prev_type = filtered_data[-1]["Type"]
-					if not class_condition or apply_condition(class_condition, prev_type, next_type):
+					if not class_condition or apply_condition(class_condition, text, prev_type, next_type):
 						mapped_row = {'Type': class_type, 'Text': text}
 						break  # Only one mapping needs to match
 			if mapped_row != None:

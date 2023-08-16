@@ -2,6 +2,4 @@ Class,Type,Condition
 book-title,TITLE,
 sub-title,PART,
 author,AUTHOR,
-ct,CHAPTER_NAME,
-cn,CHAPTER_NUMBER,
 
