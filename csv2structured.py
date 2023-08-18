@@ -17,6 +17,7 @@ def process_csv(input_filename, output_filename):
 		csvreader = csv.DictReader(csvfile)
 		
 		current_data = {
+			"VERSION": 1,
 			"SOURCE": os.path.splitext(os.path.basename(input_file))[0],
 			"TITLE": None,
 			"BOOK": None,
@@ -27,7 +28,7 @@ def process_csv(input_filename, output_filename):
 			"SPEAKER": None,
 			"TEXT_TYPE": None,
 		}
-
+		counter = 0
 		for row in csvreader:
 			type = row['Type']
 			value = row['Text']
@@ -40,14 +41,16 @@ def process_csv(input_filename, output_filename):
 				if current_data["SPEAKER"] != None and type != 'TEXT_SPEECH':
 					current_data["SPEAKER"] = None
 				last_row = result_list[-1] if len(result_list) > 0 else None
-				if last_row != None \
+				if last_row != None and counter  < 100 \
 						and (last_row["TEXT_TYPE"] == type == 'TEXT_POEM' \
 						or last_row["TEXT_TYPE"] == type == 'TEXT_LETTER'):
 					last_row["TEXT"] += ' ' + value
+					counter += 1
 				elif last_row != None and last_row["TEXT_TYPE"] == type == 'TEXT_SPEECH'\
 						and current_data["SPEAKER"] == last_row["SPEAKER"]:
 					last_row["TEXT"] += ' ' + value
 				else:
+					counter = 0
 					current_data["TEXT"] = value
 					current_data["TEXT_TYPE"] = type
 					result_list.append(dict(current_data))

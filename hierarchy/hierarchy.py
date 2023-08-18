@@ -1,5 +1,6 @@
 import sys
 import csv
+import os
 from unidecode import unidecode
 
 class Node:
@@ -108,19 +109,18 @@ def main(input_file, count, output_file, mode, include_fullname):
 	data_map = get_existing_data_map(selected_data, include_fullname)
 
 	with open(output_file, 'w', newline='', encoding='utf-8') as f:
+		used_fields = ['Realm', 'Gender', 'Race', 'Name']
+		if include_fullname:
+			used_fields.append('Fullname')
 		if mode == "structure":
-			fieldnames = ['Realm', 'Gender', 'Race', 'Name']
-			if include_fullname:
-				fieldnames.append('Fullname')
-		elif mode == "filters":
-			fieldnames = ['Path', '<PROJECT_NAME>']
-		elif mode == "users":
-			fieldnames = ['Path', 'Studio Email Address']
+			fieldnames = used_fields
+		elif mode == "filters" or mode == "users":
+			fieldnames = ['key', 'value']
 
 		writer = csv.DictWriter(f, fieldnames=fieldnames)
-		writer.writeheader()
 
 		if mode == "structure":
+			writer.writeheader()
 			for node in hierarchy:
 				row = {
 					'Realm': node.realm,
@@ -134,12 +134,19 @@ def main(input_file, count, output_file, mode, include_fullname):
 
 				writer.writerow(row)
 		elif mode == "filters" or mode == 'users':
+			path_value = ' --> '.join(used_fields)
+			if mode == 'filters':
+				writer.writerow({'key': 'Organization Hierarchy (DO NOT EDIT)','value': '<CP/WORKSPACE>'})
+				writer.writerow({'key': path_value,'value': '<PROJECT_NAME>'})
+			else:
+				writer.writerow({'key': path_value, 'value': 'Studio Email Address'})
+
 			for node in hierarchy:
 				values = [value for value in (node.gender, node.race, node.name, node.fullname if include_fullname else None) if value is not None]
 				path = ' --> '.join([node.realm] + values)
 				key = tuple(values)
 
-				chars = data_map[key] if key else None
+				chars = data_map[key] if len(values) > 2 else None
 				if mode == "filters":
 					if chars:
 						unique_words = set()
@@ -150,8 +157,8 @@ def main(input_file, count, output_file, mode, include_fullname):
 						filter = 'ALL'
 
 					row = {
-						'Path': path,
-						'<PROJECT_NAME>': filter
+						'key': path,
+						'value': filter
 					}
 				else:
 					if chars:
@@ -159,27 +166,33 @@ def main(input_file, count, output_file, mode, include_fullname):
 					else:
 						emails = []
 					row = {
-						'Path': path,
-						'Studio Email Address': ','.join(sorted(emails))
+						'key': path,
+						'value': ','.join(sorted(emails))
 					}
 				writer.writerow(row)
 
 if __name__ == '__main__':
-	if len(sys.argv) < 5:
-		print("Usage: python script.py <input_file> <count> <output_file> <mode> [--fullname]")
+	if len(sys.argv) < 4:
+		print("Usage: python script.py <input_file> <count> [--all | <output_file> <mode>] [--fullname]")
 		print("Mode options: structure, filters, users")
 	else:
 		input_file = sys.argv[1]
 		count = int(sys.argv[2])
-		output_file = sys.argv[3]
 
 		include_fullname = False
-		if len(sys.argv) >= 6 and sys.argv[5] == "--fullname":
+		if sys.argv[-1] == "--fullname":
 			include_fullname = True
 
-		mode = sys.argv[4]
-		if mode not in ["structure", "filters", "users"]:
-			print("Invalid mode. Mode options: structure, filters, users")
-			sys.exit(1)
+		if sys.argv[3] == '--all':
+			filebase = os.path.splitext(input_file)[0]
+			main(input_file, count, f"{filebase}_{count}_structure.csv", 'structure', include_fullname)
+			main(input_file, count, f"{filebase}_{count}_filters.csv", 'filters', include_fullname)
+			main(input_file, count, f"{filebase}_{count}_users.csv", 'users', include_fullname)
+		else:
+			output_file = sys.argv[3]
+			mode = sys.argv[4]
+			if mode not in ["structure", "filters", "users"]:
+				print("Invalid mode. Mode options: structure, filters, users")
+				sys.exit(1)
 
-		main(input_file, count, output_file, mode, include_fullname)
+			main(input_file, count, output_file, mode, include_fullname)

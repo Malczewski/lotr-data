@@ -3,6 +3,8 @@ import random
 import sys
 from unidecode import unidecode
 
+random.seed(42)
+
 def generate_email(first_name, last_name, index, domain_name):
 	email = f"{first_name.replace(' ', '.').lower()}.{last_name.replace(' ', '.').lower()}_{index}@{domain_name}"
 	return unidecode(email)
