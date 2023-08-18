@@ -12,7 +12,7 @@ for name in __characters_fullnames:
 
 __characters_names = set(__characters_names)
 __characters_names = list(__characters_names)
-__characters_names = [item for item in __characters_names if item not in ['I', 'II', 'III', 'IV', 'V', 'VI', 'Great', 'Eagle']]
+__characters_names = [item for item in __characters_names if item not in ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'Great', 'Eagle']]
 
 def is_substring_in_string(substring, text):
 	# Normalize both the substring and text to NFD form

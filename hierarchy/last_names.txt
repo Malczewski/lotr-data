@@ -1,0 +1,300 @@
+Great
+Terrible
+Bold
+Pious
+Magnificent
+Lionheart
+Brave
+Noble
+Wise
+Victorious
+Conqueror
+Saint
+Fearless
+Just
+Mighty
+Cruel
+Fair
+Charismatic
+Empirical
+The Wise
+The Fearless
+The Conqueror
+The Saint
+The Brave
+The Magnificent
+The Just
+The Noble
+The Mighty
+The Bold
+The Lionheart
+The Terrible
+The Great
+The Fair
+The Pious
+The Valiant
+The Gallant
+The Wise
+The Majestic
+The Regal
+The Resolute
+The Audacious
+The Fierce
+The Charismatic
+The Glorious
+The Sublime
+The Heroic
+The Brilliant
+The Luminous
+The Sovereign
+The Tenacious
+The Invincible
+The Radiant
+The Empowered
+The Enlightened
+The Revered
+The Illustrious
+The Unyielding
+The Enigmatic
+The Formidable
+The Harmonious
+The Conscientious
+The Dauntless
+The Indomitable
+The Eloquent
+The Glorious
+The Tenacious
+The Regal
+The Radiant
+The Majestic
+The Gallant
+The Noble
+The Victorious
+The Charismatic
+The Bold
+The Magnificent
+The Fierce
+The Wise
+The Heroic
+The Luminous
+The Resolute
+The Audacious
+The Enlightened
+The Empowered
+The Fearless
+The Sublime
+The Conqueror
+The Lionheart
+The Glorious
+The Pious
+The Valiant
+The Illustrious
+The Unyielding
+The Formidable
+The Harmonious
+The Charismatic
+The Invincible
+The Radiant
+The Sovereign
+The Magnificent
+The Enigmatic
+Audacious
+Brilliant
+Chivalrous
+Courageous
+Daring
+Defiant
+Eloquent
+Gallant
+Gentle
+Glorious
+Heroic
+Honorable
+Illuminated
+Ingenious
+Inspiring
+Intrepid
+Just
+Legendary
+Majestic
+Noble
+Ornate
+Passionate
+Poetic
+Proud
+Radiant
+Regal
+Resolute
+Serene
+Skilled
+Spirited
+Strong
+Sublime
+Valiant
+Virtuous
+Wise
+Zealous
+Adroit
+Benevolent
+Charismatic
+Conscientious
+Dauntless
+Discerning
+Enigmatic
+Formidable
+Graceful
+Indomitable
+Magnanimous
+Noble
+Perceptive
+Pious
+Precious
+Radiant
+Resplendent
+Sagacious
+Splendid
+Steadfast
+Stoic
+Tenacious
+Transcendent
+Unyielding
+Visionary
+Wise
+Artful
+Benevolent
+Charismatic
+Distinguished
+Empowered
+Exalted
+Fearless
+Gracious
+Harmonious
+Imposing
+Intrepid
+Jubilant
+Kind
+Majestic
+Noble
+Outspoken
+Passionate
+Regal
+Resilient
+Revered
+Serene
+Spirited
+Strong
+Tranquil
+Valiant
+Virtuous
+Wise
+Zealous
+Bold
+Compassionate
+Eloquent
+Fearless
+Gracious
+Heroic
+Intrepid
+Jubilant
+Majestic
+Noble
+Running Bear
+Singing Hawk
+Morning Star
+Dancing Willow
+Swift River
+Whispering Wind
+Red Wolf
+Quiet Fox
+Blue Sky
+Autumn Leaves
+Eagle Feather
+Thunderbird
+Falling Rain
+Cedar Tree
+Laughing Brook
+Golden Eagle
+Little Bear
+Moonlight Shadow
+Starry Night
+Sacred Mesa
+Brave Bison
+Soaring Hawk
+Whispering Pine
+Quiet Waters
+Strong Oak
+Swift Arrow
+Silent Moon
+Running Wolf
+Wandering Spirit
+Dancing Fire
+Morning Dew
+Laughing Songbird
+Sunflower
+Rising Sun
+Peaceful River
+Wild Mustang
+Smiling Fox
+Falling Leaves
+Singing Thunder
+Serene Lake
+Gentle Breeze
+Feathered Sky
+Mountain Echo
+Swift Current
+Stone Bear
+Graceful Doe
+Quiet Storm
+Shining Star
+Running Brook
+Laughing Waters
+Whispering Owl
+Brave Heart
+Dancing Flame
+Autumn Sky
+Golden Horizon
+Little Otter
+Sunlit Meadow
+Morning Mist
+Rising Moon
+Strong Rock
+Thundering Falls
+Swift Wind
+Silent Forest
+Running Deer
+Wandering Wolf
+Singing River
+Serene Valley
+Dancing Rainbow
+Peaceful Dawn
+Smiling Bear
+Falling Snow
+Mountain Spirit
+Quiet Dove
+Gentle Rain
+Feathered Song
+Swift Blaze
+Stone Path
+Laughing Sun
+Whispering Brook
+Brave Eagle
+Autumn Flame
+Golden Fields
+Little Falcon
+Sunlit Canyon
+Morning Glow
+Rising Fire
+Strong Heart
+Thundering Sky
+Swift Feather
+Silent Echo
+Running Thunder
+Singing Lark
+Serene Whisper
+Dancing Star
+Peaceful Harbor
+Falling Echo
+Mountain Dream
+Quiet Serenity
+Gentle Spirit
+Feathered Dreamer
