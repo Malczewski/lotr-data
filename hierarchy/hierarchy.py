@@ -4,7 +4,7 @@ import os
 from unidecode import unidecode
 
 class Node:
-	def __init__(self, realm, gender, race, name, fullname=None):
+	def __init__(self, realm, gender, race, name=None, fullname=None):
 		self.realm = realm
 		self.gender = gender
 		self.race = race
@@ -19,20 +19,22 @@ class Character:
 		self.fullname = fullname
 		self.email = email
 
-def gather_unique_values(data: list, include_fullname: bool):
+def gather_unique_values(data: list, include_name: bool, include_fullname: bool):
 	unique_values = {
 		'Gender': set(),
 		'Race': set(),
-		'Name': set(),
 	}
 
+	if include_name:
+		unique_values['Name'] = set()
 	if include_fullname:
 		unique_values['Fullname'] = set()
 
 	for char in data:
 		unique_values['Gender'].add(char.gender)
 		unique_values['Race'].add(char.race)
-		unique_values['Name'].add(char.name)
+		if include_name and char.name:
+			unique_values['Name'].add(char.name)
 		
 		if include_fullname and char.fullname:
 			unique_values['Fullname'].add(char.fullname)
@@ -45,53 +47,55 @@ def add_char_to_dict(dict: dict, key: tuple, char: Character):
 	else:
 		dict[key] = [char]
 
-def get_existing_data_map(selected_data: list, include_fullname: bool):
+def get_existing_data_map(selected_data: list, include_name: bool, include_fullname: bool):
 	data_dict = {}
 
 	for char in selected_data:
 		if (include_fullname):
 			add_char_to_dict(data_dict, (char.gender, char.race, char.name, char.fullname), char)
-		add_char_to_dict(data_dict, (char.gender, char.race, char.name), char)
+		if (include_name):
+			add_char_to_dict(data_dict, (char.gender, char.race, char.name), char)
 		add_char_to_dict(data_dict, (char.gender, char.race), char)
 		add_char_to_dict(data_dict, (char.gender,), char)
 
 	return data_dict
 
-def generate_hierarchy(unique_values, selected_data, include_fullname):
-	data_dict = get_existing_data_map(selected_data, include_fullname)
+def generate_hierarchy(unique_values, selected_data, include_name, include_fullname):
+	data_dict = get_existing_data_map(selected_data, include_name, include_fullname)
 	hierarchy = []
 
 	realm = 'Middle Earth'
-	hierarchy.append(Node(realm, None, None, None))
+	hierarchy.append(Node(realm, None, None))
 
 	for gender in sorted(unique_values['Gender']):
 		fullkey = (gender,)
 		if fullkey not in data_dict:
 			continue
-		hierarchy.append(Node(realm, gender, None, None))
+		hierarchy.append(Node(realm, gender, None))
 
 		for race in sorted(unique_values['Race']):
 			fullkey = (gender, race)
 			if fullkey not in data_dict:
 				continue
-			hierarchy.append(Node(realm, gender, race, None))
+			hierarchy.append(Node(realm, gender, race))
 
-			for name in sorted(unique_values['Name']):
-				fullkey = (gender, race, name)
-				if fullkey not in data_dict:
-					continue
-				hierarchy.append(Node(realm, gender, race, name))
+			if include_name:
+				for name in sorted(unique_values['Name']):
+					fullkey = (gender, race, name)
+					if fullkey not in data_dict:
+						continue
+					hierarchy.append(Node(realm, gender, race, name))
 
-				if include_fullname:
-					for fullname in sorted(unique_values['Fullname']):
-						fullkey = (gender, race, name, fullname)
-						if fullkey not in data_dict:
-							continue
-						hierarchy.append(Node(realm, gender, race, name, fullname))
+					if include_fullname:
+						for fullname in sorted(unique_values['Fullname']):
+							fullkey = (gender, race, name, fullname)
+							if fullkey not in data_dict:
+								continue
+							hierarchy.append(Node(realm, gender, race, name, fullname))
 	
 	return hierarchy
 
-def main(input_file, count, output_file, mode, include_fullname):
+def main(input_file, count, output_file, mode, include_name, include_fullname):
 	data = []
 
 	with open(input_file, 'r', encoding='utf-8') as f:
@@ -104,12 +108,14 @@ def main(input_file, count, output_file, mode, include_fullname):
 
 	selected_data = data[:count]
 
-	unique_values = gather_unique_values(selected_data, include_fullname)
-	hierarchy = generate_hierarchy(unique_values, selected_data, include_fullname)
-	data_map = get_existing_data_map(selected_data, include_fullname)
+	unique_values = gather_unique_values(selected_data, include_name, include_fullname)
+	hierarchy = generate_hierarchy(unique_values, selected_data, include_name, include_fullname)
+	data_map = get_existing_data_map(selected_data, include_name, include_fullname)
 
 	with open(output_file, 'w', newline='', encoding='utf-8') as f:
-		used_fields = ['Realm', 'Gender', 'Race', 'Name']
+		used_fields = ['Realm', 'Gender', 'Race']
+		if include_name:
+			used_fields.append('Name')
 		if include_fullname:
 			used_fields.append('Fullname')
 		if mode == "structure":
@@ -126,9 +132,10 @@ def main(input_file, count, output_file, mode, include_fullname):
 					'Realm': node.realm,
 					'Gender': node.gender,
 					'Race': node.race,
-					'Name': node.name
 				}
 
+				if include_name:
+					row['Name'] = node.name
 				if include_fullname:
 					row['Fullname'] = node.fullname
 
@@ -142,11 +149,11 @@ def main(input_file, count, output_file, mode, include_fullname):
 				writer.writerow({'key': path_value, 'value': 'Studio Email Address'})
 
 			for node in hierarchy:
-				values = [value for value in (node.gender, node.race, node.name, node.fullname if include_fullname else None) if value is not None]
+				values = [value for value in (node.gender, node.race, node.name if include_name else None, node.fullname if include_fullname else None) if value is not None]
 				path = ' --> '.join([node.realm] + values)
 				key = tuple(values)
-
-				chars = data_map[key] if len(values) > 2 else None
+				limit = 2 if include_name else 1
+				chars = data_map[key] if len(values) > limit else None
 				if mode == "filters":
 					if chars:
 						unique_words = set()
@@ -173,21 +180,24 @@ def main(input_file, count, output_file, mode, include_fullname):
 
 if __name__ == '__main__':
 	if len(sys.argv) < 4:
-		print("Usage: python script.py <input_file> <count> [--all | <output_file> <mode>] [--fullname]")
+		print("Usage: python script.py <input_file> <count> [--all | <output_file> <mode>] [--name] [--fullname]")
 		print("Mode options: structure, filters, users")
 	else:
 		input_file = sys.argv[1]
 		count = int(sys.argv[2])
 
 		include_fullname = False
+		include_name = False
 		if sys.argv[-1] == "--fullname":
 			include_fullname = True
+		if sys.argv[-2] == "--name":
+			include_name = True
 
 		if sys.argv[3] == '--all':
 			filebase = os.path.splitext(input_file)[0]
-			main(input_file, count, f"{filebase}_{count}_structure.csv", 'structure', include_fullname)
-			main(input_file, count, f"{filebase}_{count}_filters.csv", 'filters', include_fullname)
-			main(input_file, count, f"{filebase}_{count}_users.csv", 'users', include_fullname)
+			main(input_file, count, f"{filebase}_{count}_structure.csv", 'structure', include_name, include_fullname)
+			main(input_file, count, f"{filebase}_{count}_filters.csv", 'filters', include_name, include_fullname)
+			main(input_file, count, f"{filebase}_{count}_users.csv", 'users', include_name, include_fullname)
 		else:
 			output_file = sys.argv[3]
 			mode = sys.argv[4]
@@ -195,4 +205,4 @@ if __name__ == '__main__':
 				print("Invalid mode. Mode options: structure, filters, users")
 				sys.exit(1)
 
-			main(input_file, count, output_file, mode, include_fullname)
+			main(input_file, count, output_file, mode, include_name, include_fullname)
